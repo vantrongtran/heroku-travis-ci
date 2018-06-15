@@ -1,13 +1,19 @@
 language: ruby
+cache: bundler
+bundler_args: "--binstubs=./bundler_stubs"
 rvm:
-  - "2.4.1"
+- 2.4.1
 env:
-  - DB=mysql
+- DB=mysql
+- RAILS_ENV=test
 script:
-  - RAILS_ENV=test bundle exec rake db:migrate --trace
-  - bundle exec rake db:test:prepare
-  - bundle exec rubocop
-  - bundle exec rspec spec
+- bundle install
+- RAILS_ENV=test bundle exec rake db:migrate --trace
+- bundle exec rake db:test:prepare
+- bundle exec rubocop
+- bundle exec rspec spec
 before_script:
-  - mysql -e 'create database testtravisci_test'
-bundler_args: --binstubs=./bundler_stubs
+- mysql -e 'create database testtravisci_test'
+notifications:
+  slack:
+    secure: kzrnSGr15k6Xrvp7WH0vpWuBkTPLDQndisosyeS38c+p08OoMv1BM9GgPmGLpEVzJEQaYDxt/TTlTPL4ROyualvrEycehlvqfYhVxObqymUhy0eUfBDnOeKPMkbAy2N0UJF9hRHwaVHZYFBkwIWJMAiXjwk5t5peFryL9uS6I1Ay6I/ZH7Cghm2bLtbdEVstVDllUwKPZ3tRjC6nRhVEhrkI6fyenqtDX3YB+xGcFKt2ThwxOzKujrJ0WpTU6cnNJXEOR5n0a6vBxKxvb5ZIIAQID0q4Ixtnzt1v1bfzWeuC0C6zHTrawZQyDlGoKz4eYvRYGRfuv0lt4PnQGbBqU+3MBYr8hQXjGl+7oO9BBA1rl0TeBHc8UtmauaLzolhZLUjB6KkF6V9OHU5xW/QhQCKco4sRZXA/3G1U8JLujMoC+bMVop+F+PcpyeJ+GjLwqiPmush9h2UYUqE3zIhvqyDDOMaX+K+ifgow4XgWxqrxkNT1NWjoMxI6bhVP/xgdKcaU+LHJb3dSK7GE6FuT4XlClVeD3gKb0IXGbpjyecipXVw1kJTU8rYB26ygwJJxQzmtMI4d02urU5qniCsQdHIJa+d6rfyDftFziAqQYu28zQ3I0D7XLmkFC8FZm+56miN9v3TlY9efWU9I02oqDldlXUPLXxUxUPbT3CARgwU=
